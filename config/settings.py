@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'ckeditor',
     'django_extensions',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
