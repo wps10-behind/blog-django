@@ -18,8 +18,7 @@ class Category(models.Model):
         super(Category, self).save(*args, **kwargs)
 
 class Post(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,
-                                null=True, blank=True, related_name='posts')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=50)
     text = RichTextField()
