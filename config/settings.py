@@ -46,7 +46,11 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+<<<<<<< HEAD
     'allauth.socialaccount.providers.facebook'
+=======
+    'allauth.socialaccount.providers.facebook',
+>>>>>>> de1cb5c3fdb8c50f2cad091d0cd74e0925d029c9
 ]
 
 MIDDLEWARE = [
@@ -145,9 +149,13 @@ CKEDITOR_UPLOAD_PATH = 'wysiwyg/'
 
 CKEDITOR_RESTRICT_BY_USER = True
 
+INTERNAL_IPS = ['127.0.0.1']
+
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
