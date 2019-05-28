@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_extensions',
     'sslserver',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +144,13 @@ MEDIA_URL = '/media/'
 CKEDITOR_UPLOAD_PATH = 'wysiwyg/'
 
 CKEDITOR_RESTRICT_BY_USER = True
+
+INTERNAL_IPS = ['127.0.0.1']
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
