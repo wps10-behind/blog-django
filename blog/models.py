@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
 
@@ -21,6 +21,6 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=50)
-    text = RichTextField()
+    text = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
