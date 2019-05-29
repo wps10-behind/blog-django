@@ -14,6 +14,7 @@ class PostList(ListView):
     model = Post
     print(model.title)
     template_name = 'blog/post_list.html'
+
 def post_list(request):
     page = int(request.GET.get('page', 1))
     paginated_by = 6
@@ -27,8 +28,8 @@ def post_list(request):
     end_index = paginated_by * page
 
     posts = post[start_index:end_index]
-
-    return render(request, 'blog/post_list.html', {'object_list': posts, 'total_page': total_page, 'page_range': page_range})
+    count = Post.objects.count()
+    return render(request, 'blog/post_list.html', {'object_list': posts, 'total_page': total_page, 'page_range': page_range, 'post':post})
 
 def post_create(request):
     if not request.user.is_authenticated:
@@ -66,6 +67,7 @@ def post_update(request, post_id):
 
 def post_delete(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+    post.created
 
     if request.user != post.author and not request.user.is_staff:
         messages.warning(request, "권한 없음")
