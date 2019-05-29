@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block content %}
 <form action="" method="post">
    {% csrf_token %}
    {{form.media}} {# 필드나 폼에 설정된 css, js 파일 목록을 출력한다. #}
    {{form.as_p}} {# form.as_p 같은 애들은 폼 태그를 출력한다. #}
    <input type="submit" value="Create">
 </form>
-</body>
-</html>
+{% endblock %}

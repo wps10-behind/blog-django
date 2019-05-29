@@ -5,5 +5,5 @@ __pycache__
 .idea/
 db.sqlite3
 django.key
-django.cert
+django.certp
 
