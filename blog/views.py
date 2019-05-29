@@ -33,7 +33,7 @@ def post_list(request):
 def post_create(request):
     if not request.user.is_authenticated:
         messages.warning(request, "게시물을 생성 할 권한이 없습니다")
-        return render(request, 'blog/post_list.html',{})
+        return render(request, 'blog/post_list.html',{'fuck':1})
     else:
         if request.method == "POST":
             form = PostForm(request.POST, request.FILES)
@@ -49,7 +49,7 @@ def post_create(request):
 def post_update(request, post_id):
     if not request.user.is_authenticated and not request.user.is_staff:
         messages.warning(request, "게시물을 수정 할 권한이 없습니다")
-        return render(request, 'board/album_list.html',{})
+        return render(request, 'blog/post_list.html',{'fuck':1})
     else:
         if request.method == "POST":
             post = Post.objects.get(pk=post_id)
@@ -69,7 +69,7 @@ def post_delete(request, post_id):
 
     if request.user != post.author and not request.user.is_staff:
         messages.warning(request, "권한 없음")
-        return redirect(post)
+        return render(request, 'blog/post_list.html',{'fuck':1})
 
     if request.method == "POST":
         post.delete()

@@ -3,6 +3,7 @@
 {% endblock %}
 
 {% block content %}
+{% if not fuck %}
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -42,4 +43,6 @@
     </li>
   </ul>
 </nav>
+{% else %}
+{% endif %}
 {% endblock %}

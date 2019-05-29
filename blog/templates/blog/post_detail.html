@@ -9,11 +9,15 @@
         <div class="card-deck">
             <div class="card" style>
                 <div class="card-body">
-                    <div class="card-title" style="font-style: italic;">
-                        {{object.title}}
-                        <p style="text-align:right">{{object.category.name}}</p>
-                    </div>
-                    <h6 class="text-muted" style ="float-right">{{object.created}}</h6>
+                    <normal>{{object.title}}</normal>
+                    <normal style="margin-right:5px">{{object.created}}</normal>
+<!--                    <p class="card-title" style="font-style: italic;">-->
+<!--                        {{object.title}}-->
+<!--                    <h6 class="float-right">{{object.created}}</h6>-->
+<!--                        <p style="text-align:right">{{object.category.name}}</p>-->
+
+                    </p>
+
                     <div class="card-footer">
                     <small class="text-muted">{{object.text|safe}}</small>
                     </div>
@@ -22,10 +26,10 @@
                 </div>
             </div>
         <ul class="nav nav-pills">
-    </ul>
+        </ul>
+        </div>
+
     </div>
 
-</div>
-
-</form>
+    </form>
 {% endblock %}
