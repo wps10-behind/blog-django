@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Title</th>
+      <th scope="col">생성일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        {% for object in object_list %}
+        <th scope="row">1</th>
+        <td>{{object.category.name}}</td>
+        <td><a href="{% url 'blog:post_detail' object.id %}">{{object.title}}</a></td>
+        <td>{{object.created}}</td>
+        {% endfor %}
+    </tr>
+  </tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="{% url 'blog:index' %}?page={{page}}-1" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+        {% for page in page_range %}
+        <li class="page-item"><a class="page-link" href="{% url 'blog:index' %}?page={{page}}">{{page}}</a></li>
+        {% endfor %}
+      <a class="page-link" href="{% url 'blog:index' %}?page={{page}}+1 " aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{% endblock %}
