@@ -17,6 +17,9 @@ class Category(models.Model):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.slug
+
 class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='posts')
@@ -24,3 +27,9 @@ class Post(models.Model):
     text = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("blog:index")

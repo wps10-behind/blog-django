@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import math
 from django.views.generic.list import ListView
 from .models import Category, Post
 from django.urls import reverse
@@ -11,7 +12,23 @@ from .forms import CategoryForm, PostForm
 
 class PostList(ListView):
     model = Post
+    print(model.title)
     template_name = 'blog/post_list.html'
+def post_list(request):
+    page = int(request.GET.get('page', 1))
+    paginated_by = 6
+
+    post = Post.objects.all()
+    total_count = len(post)
+    total_page = math.ceil(total_count / paginated_by)
+    page_range = range(1, total_page + 1)
+
+    start_index = paginated_by * (page-1)
+    end_index = paginated_by * page
+
+    posts = post[start_index:end_index]
+
+    return render(request, 'blog/post_list.html', {'object_list': posts, 'total_page': total_page, 'page_range': page_range})
 
 def post_create(request):
     if not request.user.is_authenticated:
@@ -22,7 +39,7 @@ def post_create(request):
             form = PostForm(request.POST, request.FILES)
             form.instance.author_id = request.user.id
             if form.is_valid():
-                post = form.save()
+                form.save()
                 return redirect(reverse("blog:index"))
         else:
             form = PostForm()
@@ -39,8 +56,8 @@ def post_update(request, post_id):
             form = PostForm(request.POST, request.FILES, instance=post)
 
             if form.is_valid():
-                    post = form.save()
-                    return redirect(reverse("post:index"))
+                form.save()
+                return redirect(reverse("post:index"))
         else:
             post = Post.objects.get(pk=post_id)
             form = PostForm(instance=post)
@@ -56,7 +73,7 @@ def post_delete(request, post_id):
 
     if request.method == "POST":
         post.delete()
-        return redirect(reverse("post:index"))
+        return redirect(reverse("blog:index"))
     else:
         return render(request, 'blog/post_delete.html', {'object': post})
 
