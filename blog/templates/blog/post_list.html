@@ -3,30 +3,41 @@
 {% endblock %}
 
 {% block content %}
+{% if not fuck %}
 <br>
+
+<h5>전체글 보기</h5>
+
+<small><strong>{{post.count}}</strong> 개의 글</small>
+
 <table class="table">
-  <thead class="thead-dark">
+  <thead class="thead">
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Category</th>
+      <th scope="col" width="50">Category</th>
       <th scope="col">Title</th>
-      <th scope="col">생성일</th>
+        <th scope="col" width="50">작성자</th>
+      <th scope="col" width="220">생성일</th>
     </tr>
   </thead>
   <tbody>
     <tr>
         {% for object in object_list %}
-        <th scope="row">1</th>
         <td>{{object.category.name}}</td>
         <td><a href="{% url 'blog:post_detail' object.id %}">{{object.title}}</a></td>
-        <td>{{object.created}}</td>
+        <td>{{object.author}}</td>
+        <td>{{object.created }}</td>
         {% endfor %}
     </tr>
   </tbody>
 </table>
+{% if user.is_authenticated %}
+
+    <a href="{% url 'blog:post_create' %}" class="btn btn-outline-dark btn-sm" style="float:right">글쓰기</a><br>
+
+{% endif %}
 
 <nav aria-label="Page navigation example">
-  <ul class="pagination">
+  <ul class="pagination pagination-sm justify-content-center">
     <li class="page-item">
       <a class="page-link" href="{% url 'blog:index' %}?page={{page}}-1" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
@@ -43,4 +54,8 @@
     </li>
   </ul>
 </nav>
+
+
+{% else %}
+{% endif %}
 {% endblock %}
