@@ -4,7 +4,8 @@ from django.views.generic.list import ListView
 from .models import Category, Post
 from django.urls import reverse
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
+from django.db.models import Q
 
 from .forms import CategoryForm, PostForm
 
@@ -15,21 +16,51 @@ class PostList(ListView):
     print(model.title)
     template_name = 'blog/post_list.html'
 
-def post_list(request):
+def post_list(request, category_id=0):
     page = int(request.GET.get('page', 1))
     paginated_by = 6
 
-    post = Post.objects.all()
-    total_count = len(post)
+    search_type = request.GET.getlist('search_type', None)
+
+    if not search_type:
+        search_type = ['text']
+
+    search_key = request.GET.get('search_key', None)
+    search_q = None
+
+    option_q = Q(post__category__id__contains=category_id)
+    if search_key:
+        if 'title' in search_type:
+            temp_q = Q(title__icontains=search_key)
+            search_q = search_q | temp_q & option_q if search_q else temp_q & option_q
+        if 'text' in search_type:
+            temp_q = Q(text__icontains=search_key)
+            search_q = search_q | temp_q & option_q if search_q else temp_q & option_q
+        if 'username' in search_type:
+            temp_q = Q(author__username__icontains=search_key)
+            search_q = search_q | temp_q & option_q if search_q else temp_q & option_q
+
+        if category_id==0:
+            posts = Post.objects.all()
+        else:
+            posts = get_list_or_404(Post, search_q)
+    else:
+        posts = Post.objects.all()
+
+    if(category_id==0):
+        posts = Post.objects.all()
+
+    total_count = len(posts)
     total_page = math.ceil(total_count / paginated_by)
     page_range = range(1, total_page + 1)
 
     start_index = paginated_by * (page-1)
     end_index = paginated_by * page
 
-    posts = post[start_index:end_index]
+    posts = posts[start_index:end_index]
+
     count = Post.objects.count()
-    return render(request, 'blog/post_list.html', {'object_list': posts, 'total_page': total_page, 'page_range': page_range, 'post':post})
+    return render(request, 'blog/post_list.html', {'object_list': posts, 'total_page': total_page, 'page_range': page_range, 'count':count})
 
 def post_create(request):
     if not request.user.is_authenticated:

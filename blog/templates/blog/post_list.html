@@ -5,10 +5,14 @@
 {% block content %}
 {% if not fuck %}
 <br>
+<style>
+table {
 
+}
+</style>
 <h5>전체글 보기</h5>
 
-<small><strong>{{post.count}}</strong> 개의 글</small>
+<small><strong>{{count}}</strong> 개의 글</small>
 
 <table class="table">
   <thead class="thead">
@@ -20,14 +24,14 @@
     </tr>
   </thead>
   <tbody>
+  {% for object in object_list %}
     <tr>
-        {% for object in object_list %}
         <td>{{object.category.name}}</td>
-        <td><a href="{% url 'blog:post_detail' object.id %}">{{object.title}}</a></td>
+        <td><a href="{% url 'blog:post_detail' object.id %}" style="color:black">{{object.title}}</a></td>
         <td>{{object.author}}</td>
         <td>{{object.created }}</td>
-        {% endfor %}
     </tr>
+  {% endfor %}
   </tbody>
 </table>
 {% if user.is_authenticated %}
@@ -54,6 +58,33 @@
     </li>
   </ul>
 </nav>
+
+<form action="" method="get" id="search_form" class="">
+    {%csrf_token%}
+    <div class="form-row align-items-center justify-content-center">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="username" name="search_type">
+            <label class="form-check-label" for="inlineCheckbox1">작성자</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="title" name="search_type">
+            <label class="form-check-label" for="inlineCheckbox2">제목</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="text" name="search_type">
+            <label class="form-check-label" for="inlineCheckbox3">본문</label>
+        </div>
+    </div>
+    <div class="form-row align-items-center justify-content-center">
+        <div class="col-sm-3 my-1">
+            <input type="text" class="form-control" placeholder="Search Keyword" name="search_key">
+        </div>
+
+        <div class="col-auto my-1">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
 
 
 {% else %}
